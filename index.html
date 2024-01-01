@@ -2,181 +2,277 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Document</title>
+	<title>Document</title>
 </head>
 <style>
-    .container {
-        max-height: 300px;
-        /* Hier setzt du dein gewünschtes Höhenlimit in Pixeln oder einer anderen Einheit */
-        overflow: auto;
-    }
 
-    table {
-        background-color: #92A8D1;
-        border-radius: 20px;
-        height: calc((100vh - 16px));
-        max-height: calc((100vh - 16px));
-        ;
-        width: 100%;
-        max-width: 100%;
-        border-collapse: collapse;
-    }
+	body
+	{
+		border-radius: 20px;
+		box-shadow: 0px 0px 19px 0px #6d6d6d;
+		margin: 20;
+		background-color: rgb(42, 42, 42);
+		display: flex;
+		flex-direction: column;
+		font-family: Arial, sans-serif;
+		color: whitesmoke;
+		overflow: hidden;
+	}
 
-    th,
-    td {
-        width: 100vw;
-        width: 100vw;
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-    }
+	table
+	{
+		border: hidden;
+		border-radius: 0 0 20px 20px;
+		background-color: rgb(37, 37, 37);
+		background: linear-gradient(90deg, rgba(45, 45, 45, 1) 0%, rgba(34, 34, 34, 1) 25%, rgba(25, 25, 25, 1) 50%, rgba(34, 34, 34, 1) 75%, rgba(45, 45, 45, 1) 100%);
+		height: calc((100vh - 32px));
+		max-height: calc((100vh - 16px - 48px));
+		width: 100vw;
+		max-width: 100%;
+		border-collapse: collapse;
+	}
+	.th2,
+	th,
+	td
+	{
 
-    label {
-        color: white;
-        font-weight: bold;
-    }
+		border: 4px double #ddd;
+		padding: 8px;
+		text-align: left;
+	}
 
-    #flex {
-        display: flex;
-        flex-direction: column;
-    }
+	.th2
+	{
+		text-align: center;
+		font-weight: bold;
+		background-color: rgb(37, 37, 37);
+		background: linear-gradient(90deg, rgba(45, 45, 45, 1) 0%, rgba(34, 34, 34, 1) 25%, rgba(25, 25, 25, 1) 50%, rgba(34, 34, 34, 1) 75%, rgba(45, 45, 45, 1) 100%);
 
-    #scrollContainer {
-        display: flex;
-        flex-direction: column;
-        overflow-y: auto;
-        overflow-x: hidden;
-        max-height: 70vh;
-        scroll-behavior: smooth;
-    }
+		font-size: calc(100% + 1vw);
+		height: 32px;
+		max-height: 32px;
 
-    .dot {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 150px;
-        width: 150px;
-        background-color: #d0d0d0;
-        border-radius: 50%;
-    }
-    .dot input
-    {
-        width: 75px;
-        background-color: #8f8f8f;
-        color: ghostwhite;
-        text-align: center;
-        font-weight: bold;
-        border: transparent;
-        border-radius: 10px;
-    }
-    .dot img {
-        width: 75px;
-        height: 75px;
-        object-fit: cover;
-    }
-    ::placeholder {
-        color: rgb(218, 218, 218);
+		border-radius: 20px 20px 0 0;
+	}
+	.th2,
+	th
+	{
+		text-align: center;
+		border: 0px solid #ddd;
+	}
+	label
+	{
+		color: white;
+		font-weight: bold;
+	}
 
-}
+	#flex
+	{
+		display: flex;
+		flex-direction: column;
+	}
+
+
+
+	tfoot,
+	tfoot td
+	{
+		border: hidden;
+		border-top: 4px double #ddd;
+	}
+	.dot
+	{
+		width: 120px;
+		height: 120px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		background-color: #d0d0d0;
+		border-radius: 50%;
+	}
+	.dot input
+	{
+		width: 75px;
+		background-color: #8f8f8f;
+		color: ghostwhite;
+		text-align: center;
+		font-weight: bold;
+		border: transparent;
+		border-radius: 10px;
+	}
+	.dot img
+	{
+		width: 75px;
+		height: 75px;
+		object-fit: cover;
+	}
+	::placeholder
+	{
+		color: rgb(218, 218, 218);
+	}
+
+	button
+	{
+	border: 1px solid rgb(37, 37, 37);
+	background-color: rgb(65, 65, 65);
+	text-align: center;
+	width: 125px;
+	color: #ddd;
+	display: block;
+	cursor: pointer;
+	font-size: 14px;
+	padding: 7px 0px;
+	margin: 0px;
+	border-radius: 2.5px;
+	-webkit-border-radius: 2.5px;
+	-moz-border-radius: 2.5px;
+	-ms-border-radius: 2.5px;
+	-o-border-radius: 2.5px;
+	text-decoration: none;
+	transition: all 0.3s ease;
+	}
+
+	button:hover
+	{
+		background-color: #f1f1f1;
+		color: #000;
+	}
+	#UserPanel
+	{
+		vertical-align: top;
+		width: calc((100vw) / 6);
+	}
+	#GamePanel
+	{
+		min-width: calc((100vw) / 3);
+	}
+	#ChatPanel
+	{
+		width: calc((100vw) / 6);
+
+	}
+	td label{
+		font-weight: 100;
+	}
 
 </style>
 
-<body style="background-color: powderblue;overflow: hidden;">
-   
-    <table id="table">
-        <thead>
-            <tr>
-                <th>Ping Pong</th>
-                <th>Game</th>
-                <th>Chat</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr style="background-color: #6a7b9a;">
-                <td>
-                    <div style="display: flex; flex-direction: column; height: 100%;gap: 25px;">
-                        <h3 style="color: black;align-self: center;">Welcome Steven</h3>
+<body id="body">
+	<table id="table">
+		<thead>
+			<tr>
+				<div id="tableHeader" class="th2">42-FT_TRANSCENDENCE</div>
+			</tr>
+			<tr>
+				<th>User</th>
+				<th>Game</th>
+				<th>Chat</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td id="UserPanel">
+					<div style="display: flex; flex-direction: column; height: auto;gap: 25px; align-items: center;">
+						<h3 style="align-self: center;">Welcome Steven</h3>
+						<input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="displayImage(this)" />
+						<button style="display:flex; flex-direction: column; align-items: center; width: 150px; background-color: transparent; border: hidden;"
+								onclick="document.getElementById('imageInput').click()">
+							<img class="profilbild" style="align-self: center;border: hidden;" src="avatar.png" width="75%">
+							<label>Profilbild ändern</label>
+						</button>
+						<button style="font-weight: bold;height: 35px; min-width: 50%;">Ausloggen</button>
 
-                        <img style="align-self: center;" src="avatar.png" alt="avatar" width="100" height="100">
-                        <button style="font-weight: bold;height: 35px;">Ausloggen</button>
+					</div>
+					<div style="display: flex; flex-direction: row;gap: 25px; justify-content: center;margin-top: 20px;">
+						<button style="font-weight: bold;height: 35px; min-width: 25%;">⟳ Nickname</button>
+						<button style="font-weight: bold;height: 35px; min-width: 25%;">⟳ Password</button>
+					</div>
+				</td>
+				<td id="GamePanel">
+					<div style="display: flex; flex-direction: column; height: 100%; gap: 25px;">
+						<h3 style="align-self: center;">Matchmaking</h3>
+						<div style="display: flex; flex-direction: row; justify-content: space-around; flex-wrap: wrap;">
+							<div class="dot">
+								<img class="profilbild" src="avatar.png">
+								<input id="playername1" placeholder="Player 1">
+							</div>
+							<div>
+								<label style="font-size: calc(100% + 4vw); height: 50px; ">« | »</label>
+							</div>
+							<div class="dot">
+								<img src="avatar.png">
+								<input id="playername2" placeholder="Player 2">
+							</div>
+						</div>
+						<div style="display: flex; flex-direction: row;flex-wrap: wrap; justify-content: center; gap: 5px;">
+							<button id="startSingleGame" style="font-weight: bold;height: 35px;align-self: flex-start;min-width: 25%;">Singleplayer</button>
+							<button id="startMultiGame" style="font-weight: bold;height: 35px;align-self: flex-end;min-width: 25%;">Multiplayer</button>
+						</div>
 
-                    </div>
-                </td>
-                <td>
-                    <div style="display: flex; flex-direction: column; height: 100%;gap: 25px;">
-                        <h3 style="color: black;align-self: center;">Matchmaking</h3>
-                        <div style="display: flex; flex-direction: row; justify-content: space-around;">
-                            <div class="dot">
-                                <img src="avatar.png">
-                                <input id="playername1" placeholder="Player 1">
-                            </div>
-                           
-                            <div>
-                                <label style="font-size: 50px; height: 50px;">« | »</label>
-                            </div>
-                           
-                            <div class="dot">
-                                <img src="avatar.png">
-                                <input id="playername2" placeholder="Player 2">
-                            </div>
-                        </div>
-
-                        <button id="startgame" style="font-weight: bold;height: 35px;">Spiel Starten</button>
-
-                    </div>
-                </td>
-                <td>
-                    <div style="display: flex; flex-direction: column; height: 100%;justify-content: space-between;">
-                        <h3 style="color: black;align-self: center;">Chat in Realtime</h3>
-                        <div id="flex" style="justify-content: end;">
-                            <div id="scrollContainer">
-                                <label>LatestMessage</label>
-                                <hr style="width: 100%;">
-                                <label>OldestMessage</label>
-                                <hr style="width: 100%;">
-                                <label>LatestMessage</label>
-                                <hr style="width: 100%;">
-                                <label>OldestMessage</label>
-                                <hr style="width: 100%;">
-                                <label>OldestMessage</label>
-                                <hr style="width: 100%;">
-                                <label>OldestMessage</label>
-                                <hr style="width: 100%;">
-                                <label>OldestMessage</label>
-                                <hr style="width: 100%;">
-                                <label>OldestMessage</label>
-                                <hr style="width: 100%;">
-                                <label>LatestMessage</label>
-                                <hr style="width: 100%;">
-                                <label>OldestMessage</label>
-                                <hr style="width: 100%;">
-                                <label>LatestMessage</label>
-                                <hr style="width: 100%;">
-                                <label>OldestMessage</label>
-                                <hr style="width: 100%;">
-                                <label>LatestMessage</label>
-                                <hr style="width: 100%;">
-                                <label>OldestMessage</label>
-                                <hr style="width: 100%;">
-                                <label>LatestMessage</label>
-                                <hr style="width: 100%;">
-                            </div>
-                            <textarea style="resize: vertical; max-height: 200px; min-height: 25px;"></textarea>
-                            <button style="font-weight: bold; height: 35px;">Absenden</button>
-                        </div>
-
-
-                    </div>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
-    <script src="script.js"></script>
+					</div>
+				</td>
+				<td id="ChatPanel">
+					<div style="display: flex; flex-direction: column; height: 100%;justify-content: space-between;">
+						<h3 style="align-self: center;">Chat in Realtime</h3>
+						<div id="flex" style="justify-content: end;">
+							<div id="scrollContainer">
+								<label>LatestMessage</label>
+								<hr style="width: 100%;">
+								<label>OldestMessage</label>
+								<hr style="width: 100%;">
+								<label>LatestMessage</label>
+								<hr style="width: 100%;">
+								<label>OldestMessage</label>
+								<hr style="width: 100%;">
+								<label>OldestMessage</label>
+								<hr style="width: 100%;">
+								<label>OldestMessage</label>
+								<hr style="width: 100%;">
+								<label>OldestMessage</label>
+								<hr style="width: 100%;">
+								<label>OldestMessage</label>
+								<hr style="width: 100%;">
+								<label>LatestMessage</label>
+								<hr style="width: 100%;">
+								<label>OldestMessage</label>
+								<hr style="width: 100%;">
+								<label>LatestMessage</label>
+								<hr style="width: 100%;">
+								<label>OldestMessage</label>
+								<hr style="width: 100%;">
+								<label>LatestMessage</label>
+								<hr style="width: 100%;">
+								<label>OldestMessage</label>
+								<hr style="width: 100%;">
+								<label>LatestMessage</label>
+								<hr style="width: 100%;">
+							</div>
+							<textarea style="resize: vertical; max-height: 200px; min-height: 25px;"></textarea>
+							<button style="font-weight: bold; height: 35px;align-self: center; min-width: 100%;">Absenden</button>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+		<tfoot style="padding-bottom: 50px;">
+			<tr>
+			<td style="text-align: left;display: flex; flex-direction: row; border: hidden;flex-wrap: wrap;">
+				<label>© 2023 Steven Lippert.</label>
+				<label>All rights reserved</label>
+				 </td>
+			<td style="text-align: center;">Ein Projekt als Abschluss zum core curriculum der 42 Heilbronn</td>
+			<td style="text-align: right;display: flex; flex-direction: column; border: hidden;">
+				<label id="footTime"></label>
+				<label id="footDay"></label>
+			</td>
+			</tr>
+		</tfoot>
+	</table>
+	<script src="script.js"></script>
 </body>
 
 </html>
