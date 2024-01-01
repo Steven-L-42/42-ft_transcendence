@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Document</title>
+</head>
+<style>
+    .container {
+        max-height: 300px;
+        /* Hier setzt du dein gewünschtes Höhenlimit in Pixeln oder einer anderen Einheit */
+        overflow: auto;
+    }
+
+    table {
+        background-color: #92A8D1;
+        border-radius: 20px;
+        height: calc((100vh - 16px));
+        max-height: calc((100vh - 16px));
+        ;
+        width: 100%;
+        max-width: 100%;
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        width: 100vw;
+        width: 100vw;
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    label {
+        color: white;
+        font-weight: bold;
+    }
+
+    #flex {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #scrollContainer {
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        overflow-x: hidden;
+        max-height: 70vh;
+        scroll-behavior: smooth;
+    }
+
+    .dot {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 150px;
+        width: 150px;
+        background-color: #d0d0d0;
+        border-radius: 50%;
+    }
+    .dot input
+    {
+        width: 75px;
+        background-color: #8f8f8f;
+        color: ghostwhite;
+        text-align: center;
+        font-weight: bold;
+        border: transparent;
+        border-radius: 10px;
+    }
+    .dot img {
+        width: 75px;
+        height: 75px;
+        object-fit: cover;
+    }
+    ::placeholder {
+        color: rgb(218, 218, 218);
+
+}
+
+</style>
+
+<body style="background-color: powderblue;overflow: hidden;">
+   
+    <table id="table">
+        <thead>
+            <tr>
+                <th>Ping Pong</th>
+                <th>Game</th>
+                <th>Chat</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="background-color: #6a7b9a;">
+                <td>
+                    <div style="display: flex; flex-direction: column; height: 100%;gap: 25px;">
+                        <h3 style="color: black;align-self: center;">Welcome Steven</h3>
+
+                        <img style="align-self: center;" src="avatar.png" alt="avatar" width="100" height="100">
+                        <button style="font-weight: bold;height: 35px;">Ausloggen</button>
+
+                    </div>
+                </td>
+                <td>
+                    <div style="display: flex; flex-direction: column; height: 100%;gap: 25px;">
+                        <h3 style="color: black;align-self: center;">Matchmaking</h3>
+                        <div style="display: flex; flex-direction: row; justify-content: space-around;">
+                            <div class="dot">
+                                <img src="avatar.png">
+                                <input id="playername1" placeholder="Player 1">
+                            </div>
+                           
+                            <div>
+                                <label style="font-size: 50px; height: 50px;">« | »</label>
+                            </div>
+                           
+                            <div class="dot">
+                                <img src="avatar.png">
+                                <input id="playername2" placeholder="Player 2">
+                            </div>
+                        </div>
+
+                        <button id="startgame" style="font-weight: bold;height: 35px;">Spiel Starten</button>
+
+                    </div>
+                </td>
+                <td>
+                    <div style="display: flex; flex-direction: column; height: 100%;justify-content: space-between;">
+                        <h3 style="color: black;align-self: center;">Chat in Realtime</h3>
+                        <div id="flex" style="justify-content: end;">
+                            <div id="scrollContainer">
+                                <label>LatestMessage</label>
+                                <hr style="width: 100%;">
+                                <label>OldestMessage</label>
+                                <hr style="width: 100%;">
+                                <label>LatestMessage</label>
+                                <hr style="width: 100%;">
+                                <label>OldestMessage</label>
+                                <hr style="width: 100%;">
+                                <label>OldestMessage</label>
+                                <hr style="width: 100%;">
+                                <label>OldestMessage</label>
+                                <hr style="width: 100%;">
+                                <label>OldestMessage</label>
+                                <hr style="width: 100%;">
+                                <label>OldestMessage</label>
+                                <hr style="width: 100%;">
+                                <label>LatestMessage</label>
+                                <hr style="width: 100%;">
+                                <label>OldestMessage</label>
+                                <hr style="width: 100%;">
+                                <label>LatestMessage</label>
+                                <hr style="width: 100%;">
+                                <label>OldestMessage</label>
+                                <hr style="width: 100%;">
+                                <label>LatestMessage</label>
+                                <hr style="width: 100%;">
+                                <label>OldestMessage</label>
+                                <hr style="width: 100%;">
+                                <label>LatestMessage</label>
+                                <hr style="width: 100%;">
+                            </div>
+                            <textarea style="resize: vertical; max-height: 200px; min-height: 25px;"></textarea>
+                            <button style="font-weight: bold; height: 35px;">Absenden</button>
+                        </div>
+
+
+                    </div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <script src="script.js"></script>
+</body>
+
+</html>
