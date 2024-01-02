@@ -1,0 +1,149 @@
+body
+{
+	border-radius: 20px;
+	box-shadow: 0px 0px 19px 0px #6d6d6d;
+	margin: 20;
+	background-color: rgb(42, 42, 42);
+	display: flex;
+	flex-direction: column;
+	font-family: Arial, sans-serif;
+	color: whitesmoke;
+	overflow: hidden;
+}
+
+table
+{
+	border: hidden;
+	border-radius: 0 0 20px 20px;
+	background-color: rgb(37, 37, 37);
+	background: linear-gradient(90deg, rgba(45, 45, 45, 1) 0%, rgba(34, 34, 34, 1) 25%, rgba(25, 25, 25, 1) 50%, rgba(34, 34, 34, 1) 75%, rgba(45, 45, 45, 1) 100%);
+	height: calc((100vh - 32px));
+	max-height: calc((100vh - 16px - 48px));
+	width: 100vw;
+	max-width: 100%;
+	border-collapse: collapse;
+}
+.th2,
+th,
+td
+{
+
+	border: 4px double #ddd;
+	padding: 8px;
+	text-align: left;
+}
+
+.th2
+{
+	text-align: center;
+	font-weight: bold;
+	background-color: rgb(37, 37, 37);
+	background: linear-gradient(90deg, rgba(45, 45, 45, 1) 0%, rgba(34, 34, 34, 1) 25%, rgba(25, 25, 25, 1) 50%, rgba(34, 34, 34, 1) 75%, rgba(45, 45, 45, 1) 100%);
+
+	font-size: calc(100% + 1vw);
+	height: 32px;
+	max-height: 32px;
+
+	border-radius: 20px 20px 0 0;
+}
+.th2,
+th
+{
+	text-align: center;
+	border: 0px solid #ddd;
+}
+label
+{
+	color: white;
+	font-weight: bold;
+}
+
+#flex
+{
+	display: flex;
+	flex-direction: column;
+}
+
+
+
+tfoot,
+tfoot td
+{
+	border: hidden;
+	border-top: 4px double #ddd;
+}
+.dot
+{
+	width: 120px;
+	height: 120px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: #d0d0d0;
+	border-radius: 50%;
+}
+.dot input
+{
+	width: 75px;
+	background-color: #8f8f8f;
+	color: ghostwhite;
+	text-align: center;
+	font-weight: bold;
+	border: transparent;
+	border-radius: 10px;
+}
+.dot img
+{
+	width: 75px;
+	height: 75px;
+	object-fit: cover;
+}
+::placeholder
+{
+	color: rgb(218, 218, 218);
+}
+
+button
+{
+border: 1px solid rgb(37, 37, 37);
+background-color: rgb(65, 65, 65);
+text-align: center;
+width: 125px;
+color: #ddd;
+display: block;
+cursor: pointer;
+font-size: 14px;
+padding: 7px 0px;
+margin: 0px;
+border-radius: 2.5px;
+-webkit-border-radius: 2.5px;
+-moz-border-radius: 2.5px;
+-ms-border-radius: 2.5px;
+-o-border-radius: 2.5px;
+text-decoration: none;
+transition: all 0.3s ease;
+}
+
+button:hover
+{
+	background-color: #f1f1f1;
+	color: #000;
+}
+#UserPanel
+{
+	vertical-align: top;
+	width: calc((100vw) / 5);
+}
+#GamePanel
+{
+	min-width: calc((100vw) / 3);
+}
+#ChatPanel
+{
+	width: calc((100vw) / 5);
+
+}
+td label{
+	font-weight: 100;
+}

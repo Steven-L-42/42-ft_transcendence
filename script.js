@@ -1,28 +1,41 @@
 document.getElementById("startSingleGame").addEventListener("click", singleplayer);
 document.getElementById("startMultiGame").addEventListener("click", multiplayer);
-
-function displayImage(input) {
-
-	const ausgewaehlteDatei = input.files[0];
-	const bildElemente = document.querySelectorAll('.profilbild');
-	bildElemente.forEach(as =>
+document.getElementById("startBotGame").addEventListener("click", botplayer);
+class Matchmaking
+{
+	constructor()
 	{
-		if (ausgewaehlteDatei)
-		{
-			const bildURL = URL.createObjectURL(ausgewaehlteDatei);
-			as.src = bildURL;
-			as.style.display = 'block';
-		}
-	});
+		this.playerName1 = "";
+		this.playerName2 = "";
+		this.matches = [[]];
+	}
 }
 
-function singleplayer()
+class GameRules
 {
-	startGame(false);
-}
-function multiplayer()
-{
-	startGame(true);
+	constructor(height, width)
+	{
+		// Schläger
+		this.paddleWidth = 3;
+		this.paddleHeight = 30;
+		this.leftPaddleY = (height - this.paddleHeight) / 2;
+		this.rightPaddleY = (height - this.paddleHeight) / 2;
+
+		// Punktzahl
+		this.leftPlayer = 0;
+		this.rightPlayer = 0;
+		this.maxPoints = 1;
+		this.round = 0;
+
+		// Ball
+		this.ballX = width / 2;
+		this.ballY = height / 2;
+		this.ballDia = 5;
+		this.ballRadius = this.ballDia / 2;
+		this.ballSpeedX = 3;
+		this.ballSpeedY = 1;
+		this.ballSpeedIncre = 1;
+	}
 }
 
 class ElapsedTimer
@@ -46,7 +59,69 @@ class ElapsedTimer
 	}
 }
 
+var match = new Matchmaking();
 
+function sendMessage(isServer, text)
+{
+	var leftName;
+	var message = document.getElementById("message");
+	var backgroundColor = "";
+	if (!isServer)
+	{
+		if (message.value == "")
+			return ;
+
+		leftName = document.getElementById("playername1").value;
+		if (leftName == "")
+			leftName = "Player 1";
+		message.value = leftName + " : " +  message.value;
+	}
+	else
+	{
+		message.value = text;
+		backgroundColor = "rgb(255, 125, 125)";
+
+	}
+	//backgroundColor = "rgb(255, 125, 125)";
+	var container = document.getElementById("scrollContainer");
+	var label = document.createElement("label");
+	var hr = document.createElement("hr");
+	hr.style.width = "100%";
+	label.innerHTML = message.value.replace(/\n/g, "<br>") + "<br>";
+	label.style.backgroundColor = backgroundColor;
+	label.style.padding = "2.5px";
+	message.value = "";
+	container.appendChild(label);
+	container.appendChild(hr);
+}
+
+function displayImage(input)
+{
+	const ausgewaehlteDatei = input.files[0];
+	const bildElemente = document.querySelectorAll('.profilbild');
+	bildElemente.forEach(as =>
+	{
+		if (ausgewaehlteDatei)
+		{
+			const bildURL = URL.createObjectURL(ausgewaehlteDatei);
+			as.src = bildURL;
+			as.style.display = 'block';
+		}
+	});
+}
+
+function singleplayer()
+{
+	startGame(false, false);
+}
+function multiplayer()
+{
+	startGame(true, false);
+}
+function botplayer()
+{
+	startGame(false, true);
+}
 function getToday()
 {
 	var footTime = document.getElementById("footTime");
@@ -72,102 +147,98 @@ window.onload = (event) =>
 	getToday();
 }
 
-function newElement(type, fontWeight, fontSize, position, left, right, top, bottom, transform)
-{
-	var newLabel = document.createElement(type);
-	newLabel.style.fontWeight = fontWeight;
-	newLabel.style.fontSize = fontSize;
-	newLabel.style.position = position;
-	newLabel.style.left = left;
-	newLabel.style.right = right;
-	newLabel.style.top = top;
-	newLabel.style.bottom = bottom;
-	newLabel.style.transform = transform;
-	return newLabel;
-}
 
-function startGame(Multiplayer)
-{
-	var test = document.getElementById("body");
-	test.style.margin = "-5";
-	var test = document.getElementById("table");
-	test.style.display = "none";
-	var test = document.getElementById("tableHeader");
-	test.style.display = "none";
 
-	var leftName = document.getElementById("playername1").value;
-	if (leftName == "")
-		leftName = "Player 1";
-	var rightName = document.getElementById("playername2").value;
-	if (Multiplayer === true)
+function startGame(Multiplayer, OnlyBot)
+{
+
+	var gameTime = new ElapsedTimer();
+	var body = document.getElementById("body");
+	body.style.margin = "-5";
+	var table = document.getElementById("table");
+	table.style.display = "none";
+	var tableHeader = document.getElementById("tableHeader");
+	tableHeader.style.display = "none";
+
+	if (!OnlyBot)
 	{
-		if (rightName == "")
-			rightName = "Player 2";
+		var leftName = document.getElementById("playername1").value;
+		if (leftName == "")
+			leftName = "Player 1";
+		var rightName = document.getElementById("playername2").value;
+		if (Multiplayer === true)
+		{
+			if (rightName == "")
+				rightName = "Player 2";
+		}
+		else
+			rightName = "Bot";
 	}
 	else
-		rightName = "Bot";
+	{
+		leftName = "Bot (Left)";
+		rightName = "Bot (Right)";
+	}
+
 	let isRunning = true;
 
 	const canvas = document.createElement("canvas");
 
 	document.body.appendChild(canvas);
 
-	canvas.style.width = "100vw";
-	canvas.style.height = "100vh";
-	canvas.style.margin = "-8px 0 0 -8px";
+	canvas.style.width = "100vw - 8px";
+	canvas.style.height = "100vh - 8px";
+	canvas.style.margin = "0";
+	canvas.style.borderRadius = "20px";
 	const context = canvas.getContext("2d");
 
-	var labelPunktestand = newElement("label", "bold", "50px", "fixed", "50%", "none", "50px", "none", "translate(-50%, -50%");
-	labelPunktestand.textContent = "0 : 0";
-	document.body.appendChild(labelPunktestand);
+	function newElement(type, fontWeight, fontSize, position, left, right, top, bottom, transform)
+	{
+		var newLabel = document.createElement(type);
+		newLabel.style.fontWeight = fontWeight;
+		newLabel.style.fontSize = fontSize;
+		newLabel.style.position = position;
+		newLabel.style.left = left;
+		newLabel.style.right = right;
+		newLabel.style.top = top;
+		newLabel.style.bottom = bottom;
+		newLabel.style.transform = transform;
+		return newLabel;
+	}
 
-	var labelCountdownText = newElement("label", "bold", "50px", "fixed", "50%", "none", "40%","none", "translate(-50%, -50%");
-	labelCountdownText.textContent = "";
-	document.body.appendChild(labelCountdownText);
-
-	var labelCountdown = newElement("label", "bold", "50px", "fixed", "50%", "none", "50%","none", "translate(-50%, -50%");
-	labelCountdown.textContent = "";
-	document.body.appendChild(labelCountdown);
-
-	var labelTimer = newElement("label", "bold", "25px", "fixed", "50%", "none", "15px","none", "translate(-50%, -50%");
+	var labelTimer = newElement("label", "bold", "calc(100vw - 98.5vw)", "fixed", "50%", "none", "25px", "none", "translate(-50%, -50%");
 	labelTimer.textContent = "0 sec.";
 	document.body.appendChild(labelTimer);
 
-	var labelLeftPlayer = newElement("label", "bold", "25px", "fixed", "10px","none", "10px","none", "none");
+	var labelPunktestand = newElement("label", "bold", "calc(100vw - 98vw)", "fixed", "50%", "none", "65px", "none", "translate(-50%, -50%");
+	labelPunktestand.textContent = "0 : 0";
+	document.body.appendChild(labelPunktestand);
+
+	var labelCountdownText = newElement("label", "bold", "calc(100vw - 98vw)", "fixed", "50%", "none", (canvas.offsetHeight * (100 - 60)) / 100 + "px", "none", "translate(-50%, -50%");
+	labelCountdownText.textContent = "";
+	document.body.appendChild(labelCountdownText);
+
+	var labelCountdown = newElement("label", "bold", "calc(100vw - 98vw)", "fixed", "50%", "none", (canvas.offsetHeight * (100 - 50)) / 100 + "px", "none", "translate(-50%, -50%");
+	labelCountdown.textContent = "";
+	document.body.appendChild(labelCountdown);
+
+
+	var labelLeftPlayer = newElement("label", "bold", "calc(100vw - 98.5vw)", "fixed", "20px","none", "20px", "none", "none");
 	labelLeftPlayer.textContent = leftName;
 	document.body.appendChild(labelLeftPlayer);
 
-	var labelRightPlayer = newElement("label", "bold", "25px", "fixed", "none","10px", "10px","none", "none");
+	var labelRightPlayer = newElement("label", "bold", "calc(100vw - 98.5vw)", "fixed", "none","20px", "20px", "none", "none");
 	labelRightPlayer.textContent = rightName;
 	document.body.appendChild(labelRightPlayer);
 
-
-	// Schläger
-	const paddleWidth = 3, paddleHeight = 60;
-	let leftPaddleY = (canvas.height - paddleHeight) / 2;
-	let rightPaddleY = (canvas.height - paddleHeight) / 2;
-
-	// Punktzahl
-	let leftPlayer = 0;
-	let rightPlayer = 0;
-	let maxPoints = 5;
-	let round = 0;
-
-	// Ball
-	let ballX = canvas.width / 2;
-	let ballY = canvas.height / 2;
-	let ballDia = 5;
-	let ballRadius = ballDia / 2;
-	let ballSpeedX = 3;
-	let ballSpeedY = 1;
-	let ballSpeedIncre = 1;
+	var gameRules = new GameRules(canvas.height, canvas.width);
 
 	function drawPaddle(x, y)
 	{
 		context.fillStyle = "#ffffff";
-		context.fillRect(x, y, paddleWidth, paddleHeight);
-
+		context.fillRect(x, y, gameRules.paddleWidth, gameRules.paddleHeight);
 	}
+
 	function drawMiddle()
 	{
 		context.fillStyle = "#ffffff";
@@ -177,8 +248,8 @@ function startGame(Multiplayer)
 			context.fillRect(canvas.width / 2 - 1, i, 2, 5);
 			i += 8;
 		}
-
 	}
+
 	function drawBall(x, y)
 	{
 		context.fillStyle = "#ffffff";
@@ -186,6 +257,7 @@ function startGame(Multiplayer)
 		context.arc(x, y, 4, 0, Math.PI * 2, false);
 		context.fill();
 	}
+
 	function drawDot(x, y)
 	{
 		context.fillStyle = "#ff0000";
@@ -193,6 +265,76 @@ function startGame(Multiplayer)
 		context.arc(x, y, 1, 0, Math.PI * 2, false);
 		context.fill();
 	}
+
+	function addMatchToFrontEnd()
+	{
+		match.matches.push([]);
+		var lastIndex = match.matches.length - 1;
+		match.matches[lastIndex][0] = leftName;
+		match.matches[lastIndex][1] = gameRules.leftPlayer;
+		match.matches[lastIndex][2] = rightName;
+		match.matches[lastIndex][3] = gameRules.rightPlayer;
+
+		var matchRound = document.getElementById("matchRound");
+		var matchLeft = document.getElementById("matchLeft");
+		var matchRight = document.getElementById("matchRight");
+		var matchScore = document.getElementById("matchScore");
+		var matchTime = document.getElementById("matchTime");
+
+		var label = document.createElement("label");
+		var hr = document.createElement("hr");
+
+		label.textContent = lastIndex + ".";
+		matchRound.appendChild(label);
+		matchRound.appendChild(hr);
+
+		label = document.createElement("label");
+		hr = document.createElement("hr");
+		label.textContent = match.matches[lastIndex][0];
+		matchLeft.appendChild(label);
+		matchLeft.appendChild(hr);
+
+		label = document.createElement("label");
+		hr = document.createElement("hr");
+		label.textContent = match.matches[lastIndex][2];
+		matchRight.appendChild(label);
+		matchRight.appendChild(hr);
+
+		label = document.createElement("label");
+		hr = document.createElement("hr");
+		label.textContent = match.matches[lastIndex][1] + " : " + match.matches[lastIndex][3];
+		matchScore.appendChild(label);
+		matchScore.appendChild(hr);
+
+		label = document.createElement("label");
+		hr = document.createElement("hr");
+		label.textContent = Math.floor(gameTime.getElapsedSeconds()) + "s";
+		matchTime.appendChild(label);
+		matchTime.appendChild(hr);
+		if (gameRules.leftPlayer > gameRules.rightPlayer)
+			sendMessage(true, "SERVER : " + leftName + " wins against " + rightName + " | " + gameRules.leftPlayer + " : " + gameRules.rightPlayer);
+		else
+			sendMessage(true, "SERVER : " + rightName + " wins against " + leftName + " | " + gameRules.rightPlayer + " : " + gameRules.leftPlayer);
+
+	}
+
+	function backToFrontEnd()
+	{
+		addMatchToFrontEnd();
+		body.style.margin = "20";
+		table.style.display = "";
+		tableHeader.style.display = "";
+		canvas.remove();
+		labelRightPlayer.remove();
+		labelLeftPlayer.remove();
+		labelCountdown.remove();
+		labelTimer.remove();
+		labelCountdownText.remove();
+		labelPunktestand.remove();
+	}
+
+
+
 	const keysState =
 	{
 		w: false,
@@ -222,55 +364,61 @@ function startGame(Multiplayer)
 	{
 		if (!isRunning)
 			return;
-		if (ballSpeedX > 0 && ballX >= canvas.width / 2)
+
+		if (gameRules.ballSpeedX > 0 && gameRules.ballX >= canvas.width / 2)
 		{
-			if (rightPaddleY < ballY - paddleHeight / 2)
-			rightPaddleY++;
-			else if (rightPaddleY > ballY - paddleHeight / 2)
-				rightPaddleY--;
+			if (gameRules.rightPaddleY < gameRules.ballY - gameRules.paddleHeight / 2)
+			gameRules.rightPaddleY++;
+			else if (gameRules.rightPaddleY > gameRules.ballY - gameRules.paddleHeight / 2)
+			gameRules.rightPaddleY--;
 		}
+		if (!OnlyBot)
+			return;
+		if (gameRules.ballSpeedX < 0 && gameRules.ballX <= canvas.width / 2)
+		{
+			if (gameRules.leftPaddleY < gameRules.ballY - gameRules.paddleHeight / 2)
+			gameRules.leftPaddleY++;
+			else if (gameRules.leftPaddleY > gameRules.ballY - gameRules.paddleHeight / 2)
+			gameRules.leftPaddleY--;
+		}
+		if (gameRules.rightPaddleY < 0)
+		gameRules.rightPaddleY = 0;
+		else if (gameRules.rightPaddleY > canvas.height - gameRules.paddleHeight)
+		gameRules.rightPaddleY = canvas.height - gameRules.paddleHeight;
 
-		// if (ballSpeedX < 0 && ballX <= canvas.width / 2)
-		// {
-		// 	if (leftPaddleY < ballY - paddleHeight / 2)
-		// 		leftPaddleY++;
-		// 	else if (leftPaddleY > ballY - paddleHeight / 2)
-		// 		leftPaddleY--;
-		// }
-		if (rightPaddleY < 0)
-			rightPaddleY = 0;
-		else if (rightPaddleY > canvas.height - paddleHeight)
-			rightPaddleY = canvas.height - paddleHeight;
-
-		// if (leftPaddleY < 0)
-		// 	leftPaddleY = 0;
-		// else if (leftPaddleY > canvas.height - paddleHeight)
-		// 	leftPaddleY = canvas.height - paddleHeight;
+		if (gameRules.leftPaddleY < 0)
+		gameRules.leftPaddleY = 0;
+		else if (gameRules.leftPaddleY > canvas.height - gameRules.paddleHeight)
+		gameRules.leftPaddleY = canvas.height - gameRules.paddleHeight;
 	}
 	function updateGame() {
 
 		if (!isRunning)
 			return;
-		if (keysState["w"])
-			leftPaddleY--;
-		if (keysState["s"])
-			leftPaddleY++;
-		if (keysState["ArrowUp"])
-			rightPaddleY--;
-		if (keysState["ArrowDown"])
-			rightPaddleY++;
-
-		if (rightPaddleY < 0)
-			rightPaddleY = 0;
-		else if (rightPaddleY > canvas.height - paddleHeight)
-			rightPaddleY = canvas.height - paddleHeight;
-
-		if (leftPaddleY < 0)
-			leftPaddleY = 0;
-		else if (leftPaddleY > canvas.height - paddleHeight)
-			leftPaddleY = canvas.height - paddleHeight;
-
 		labelTimer.textContent = Math.floor(gametimer.getElapsedSeconds()) + " sec.";
+		if (OnlyBot)
+			return;
+		if (keysState["w"])
+			gameRules.leftPaddleY--;
+		if (keysState["s"])
+			gameRules.leftPaddleY++;
+
+		if (gameRules.leftPaddleY < 0)
+			gameRules.leftPaddleY = 0;
+		else if (gameRules.leftPaddleY > canvas.height - gameRules.paddleHeight)
+			gameRules.leftPaddleY = canvas.height - gameRules.paddleHeight;
+
+		if (Multiplayer == false)
+			return ;
+		if (keysState["ArrowUp"])
+			gameRules.rightPaddleY--;
+		if (keysState["ArrowDown"])
+			gameRules.rightPaddleY++;
+
+		if (gameRules.rightPaddleY < 0)
+			gameRules.rightPaddleY = 0;
+		else if (gameRules.rightPaddleY > canvas.height - gameRules.paddleHeight)
+			gameRules.rightPaddleY = canvas.height - gameRules.paddleHeight;
 	}
 
 	const delay = ms => new Promise(res => setTimeout(res, ms));
@@ -278,13 +426,13 @@ function startGame(Multiplayer)
 	let singleGameID;
 	const resetGame = async () =>
 	{
-		round++;
+		gameRules.round++;
 		context.fillStyle = "#000000";
 		context.fillRect(0, 0, canvas.width, canvas.height);
-		if (round === 1)
+		if (gameRules.round === 1)
 			labelCountdownText.textContent = "Spiel startet...";
 		else
-			labelCountdownText.textContent = "Runde " + round + " startet...";
+			labelCountdownText.textContent = "Runde " + gameRules.round + " startet...";
 		for (let i = 3; i > 0; i--)
 		{
 			labelCountdown.textContent = i;
@@ -292,20 +440,23 @@ function startGame(Multiplayer)
 		}
 		labelCountdown.textContent = "";
 		labelCountdownText.textContent = "";
-		ballX = canvas.width / 2;
-		ballY = canvas.height / 2;
-		leftPaddleY = (canvas.height - paddleHeight) / 2;
-		rightPaddleY = (canvas.height - paddleHeight) / 2;
-		ballSpeedY = 1;
+		gameRules.ballX = canvas.width / 2;
+		gameRules.ballY = canvas.height / 2;
+		gameRules.leftPaddleY = (canvas.height - gameRules.paddleHeight) / 2;
+		gameRules.rightPaddleY = (canvas.height - gameRules.paddleHeight) / 2;
+		gameRules.ballSpeedY = 1;
 		isRunning = true;
-		ballSpeedIncre = 1;
+		gameRules.ballSpeedIncre = 1;
 		gameLoop();
+
 		gametimer.start();
 		updateGameID = setInterval(updateGame, 1000 / 100);
 		if (Multiplayer === false)
 			singleGameID = setInterval(singleGame, 1000 / 100);
 		checkTimer();
+
 	}
+
 
 	const checkStatus = async () =>
 	{
@@ -313,21 +464,21 @@ function startGame(Multiplayer)
 		{
 			clearInterval(updateGameID);
 			clearInterval(singleGameID);
-			if (ballX < paddleWidth)
+			if (gameRules.ballX < gameRules.paddleWidth)
 			{
-				rightPlayer++;
-				ballSpeedX = -3;
+				gameRules.rightPlayer++;
+				gameRules.ballSpeedX = -3;
 			}
-			else if (ballX > canvas.width - paddleWidth)
+			else if (gameRules.ballX > canvas.width - gameRules.paddleWidth)
 			{
-				leftPlayer++;
-				ballSpeedX = 3;
+				gameRules.leftPlayer++;
+				gameRules.ballSpeedX = 3;
 			}
-			labelCountdownText.textContent = leftPlayer === maxPoints ? leftName + " hat gewonnen" : rightPlayer === maxPoints ? rightName + " hat gewonnen" : "";
-			labelPunktestand.textContent = leftPlayer + " : " + rightPlayer;
+			labelCountdownText.textContent = gameRules.leftPlayer === gameRules.maxPoints ? leftName + " hat gewonnen" : gameRules.rightPlayer === gameRules.maxPoints ? rightName + " hat gewonnen" : "";
+			labelPunktestand.textContent = gameRules.leftPlayer + " : " + gameRules.rightPlayer;
 			await delay(2500);
-			if (leftPlayer === maxPoints || rightPlayer === maxPoints)
-				return;
+			if (gameRules.leftPlayer === gameRules.maxPoints || gameRules.rightPlayer === gameRules.maxPoints)
+				return backToFrontEnd();
 			await resetGame();
 		}
 	}
@@ -343,7 +494,7 @@ function startGame(Multiplayer)
 					return ;
 				await delay(100);
 			}
-			ballSpeedIncre += 0.1;
+			//ballSpeedIncre += 0.1;
 		}
 
 	}
@@ -353,26 +504,27 @@ function startGame(Multiplayer)
 
 		if (isRunning)
 		{
-			ballX += ballSpeedX * ballSpeedIncre;
-			ballY += ballSpeedY * ballSpeedIncre;
+			gameRules.ballX += gameRules.ballSpeedX * gameRules.ballSpeedIncre;
+			gameRules.ballY += gameRules.ballSpeedY * gameRules.ballSpeedIncre;
 
-			if (ballY < ballDia || ballY > canvas.height - ballDia)
-				ballSpeedY = -ballSpeedY;
+			if (gameRules.ballY < gameRules.ballDia || gameRules.ballY > canvas.height - gameRules.ballDia)
+			gameRules.ballSpeedY = -gameRules.ballSpeedY;
 
 
-			if ((ballX < paddleWidth + ballDia && ballY + ballRadius > leftPaddleY && ballY - ballRadius < leftPaddleY + paddleHeight) ||
-				(ballX > canvas.width - paddleWidth - ballDia && ballY + ballRadius > rightPaddleY && ballY - ballRadius < rightPaddleY + paddleHeight))
-				ballSpeedX = -ballSpeedX;
+			if ((gameRules.ballX < gameRules.paddleWidth + gameRules.ballDia && gameRules.ballY + gameRules.ballRadius > gameRules.leftPaddleY && gameRules.ballY - gameRules.ballRadius < gameRules.leftPaddleY + gameRules.paddleHeight) ||
+				(gameRules.ballX > canvas.width - gameRules.paddleWidth - gameRules.ballDia && gameRules.ballY + gameRules.ballRadius > gameRules.rightPaddleY && gameRules.ballY - gameRules.ballRadius < gameRules.rightPaddleY + gameRules.paddleHeight))
+				gameRules.ballSpeedX = -gameRules.ballSpeedX;
 
-			if (ballX + ballRadius  < paddleWidth || ballX - ballRadius > canvas.width - paddleWidth)
+			if (gameRules.ballX + gameRules.ballRadius  < gameRules.paddleWidth || gameRules.ballX - gameRules.ballRadius > canvas.width - gameRules.paddleWidth)
 				isRunning = false;
 
 			context.fillStyle = "#000000";
 			context.fillRect(0, 0, canvas.width, canvas.height);
 
-			drawPaddle(1, leftPaddleY);
-			drawPaddle(canvas.width - paddleWidth - 1, rightPaddleY);
-			drawBall(ballX, ballY);
+			drawPaddle(1, gameRules.leftPaddleY);
+			drawPaddle(canvas.width - gameRules.paddleWidth - 1, gameRules.rightPaddleY);
+			drawBall(gameRules.ballX, gameRules.ballY);
+
 			drawMiddle();
 			requestAnimationFrame(gameLoop);
 		}
@@ -381,12 +533,13 @@ function startGame(Multiplayer)
 
 	}
 	resetGame();
+	gameTime.start();
 }
 // // oben
-// drawDot(ballX, ballY - 2.5);
+// drawDot(gameRules.ballX, gameRules.ballY - 2.5);
 // // rechts
-// drawDot(ballX + 2.5, ballY);
+// drawDot(gameRules.ballX + 2.5, gameRules.ballY);
 // // unten
-// drawDot(ballX, ballY + 2.5);
+// drawDot(gameRules.ballX, gameRules.ballY + 2.5);
 // // links
-// drawDot(ballX - 2.5, ballY);
+// drawDot(gameRules.ballX - 2.5, gameRules.ballY);
