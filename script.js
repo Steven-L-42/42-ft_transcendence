@@ -151,11 +151,10 @@ window.onload = (event) =>
 
 function startGame(Multiplayer, OnlyBot)
 {
-
 	var gameTime = new ElapsedTimer();
 	var body = document.getElementById("body");
 	body.style.margin = "-5";
-	var table = document.getElementById("table");
+	var table = document.getElementById("myFront");
 	table.style.display = "none";
 	var tableHeader = document.getElementById("tableHeader");
 	tableHeader.style.display = "none";
@@ -509,7 +508,6 @@ function startGame(Multiplayer, OnlyBot)
 
 			if (gameRules.ballY < gameRules.ballDia || gameRules.ballY > canvas.height - gameRules.ballDia)
 			gameRules.ballSpeedY = -gameRules.ballSpeedY;
-
 
 			if ((gameRules.ballX < gameRules.paddleWidth + gameRules.ballDia && gameRules.ballY + gameRules.ballRadius > gameRules.leftPaddleY && gameRules.ballY - gameRules.ballRadius < gameRules.leftPaddleY + gameRules.paddleHeight) ||
 				(gameRules.ballX > canvas.width - gameRules.paddleWidth - gameRules.ballDia && gameRules.ballY + gameRules.ballRadius > gameRules.rightPaddleY && gameRules.ballY - gameRules.ballRadius < gameRules.rightPaddleY + gameRules.paddleHeight))

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style.css">
+	<title>42-FT_TRANSCENDENCE</title>
+</head>
+
+<body id="body">
+	<table id="table" >
+		<thead >
+			<tr >
+				<div id="tableHeader" class="th2">42-FT_TRANSCENDENCE</div>
+			</tr>
+			<tr>
+				<th>User</th>
+				<th>Game</th>
+				<th>Chat</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td id="UserPanel">
+					<div style="display: flex; flex-direction: column; height: auto;gap: 25px; align-items: center;">
+						<h3 style="align-self: center;">Welcome Steven</h3>
+						<input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="displayImage(this)" />
+						<button style="display:flex; flex-direction: column; align-items: center; width: 150px; background-color: transparent; border: hidden;"
+								onclick="document.getElementById('imageInput').click()">
+							<img class="profilbild" style="align-self: center;border: hidden;" src="avatar.png" width="75%">
+							<label>Profilbild ändern</label>
+						</button>
+						<button id="Reload" style="font-weight: bold;height: 35px; min-width: 50%;">Ausloggen</button>
+
+					</div>
+					<div style="display: flex; flex-direction: row;gap: 25px; justify-content: center;margin-top: 20px;">
+						<button style="font-weight: bold;height: 35px; min-width: 25%;">⟳ Nickname</button>
+						<button style="font-weight: bold;height: 35px; min-width: 25%;">⟳ Password</button>
+					</div>
+				</td>
+				<td id="GamePanel">
+					<div style="display: flex; flex-direction: column; height: 100%; gap: 25px;">
+						<h3 style="align-self: center;">Matchmaking</h3>
+						<div style="display: flex; flex-direction: row; justify-content: space-around; flex-wrap: wrap;">
+							<div class="dot">
+								<img class="profilbild" src="avatar.png">
+								<input id="playername1" placeholder="Player 1">
+							</div>
+							<div>
+								<label style="font-size: calc(100% + 4vw); height: 50px; ">« | »</label>
+							</div>
+							<div class="dot">
+								<img src="avatar.png">
+								<input id="playername2" placeholder="Player 2">
+							</div>
+						</div>
+						<div style="display: flex; flex-direction: row;flex-wrap: wrap; justify-content: center; gap: 5px;">
+							<button id="startSingleGame" style="font-weight: bold;height: 35px;align-self: flex-start;min-width: 25%;">Singleplayer</button>
+							<button id="startMultiGame" style="font-weight: bold;height: 35px;align-self: flex-end;min-width: 25%;">Multiplayer</button>
+							<button id="startBotGame" style="font-weight: bold;height: 35px;align-self: flex-end;min-width: 25%;">Bot vs. Bot</button>
+
+						</div>
+						<table style="width: 100%;height: 100%; background: transparent;justify-content: start;vertical-align: top;">
+							<thead>
+								<tr>
+								<th style="width: 10%;">Round</th>
+								<th>Left Player</th>
+								<th>Right Player</th>
+								<th style="width: 20%;">Score</th>
+								<th style="width: 10%;">Time</th>
+							</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td id="matchRound" style="vertical-align: top;text-align: center;"></td>
+									<td id="matchLeft" style="vertical-align: top;text-align: center;"></td>
+									<td id="matchRight" style="vertical-align: top;text-align: center;"></td>
+									<td id="matchScore" style="vertical-align: top; text-align: center;"></td>
+									<td id="matchTime" style="vertical-align: top; text-align: center;"></td>
+
+								</tr>
+							</tbody>
+						</table>
+
+					</div>
+				</td>
+				<td id="ChatPanel">
+					<div style="display: flex; flex-direction: column; height: 100%;justify-content: space-between;">
+						<h3 style="align-self: center;">Chat in Realtime</h3>
+						<div id="flex" style="justify-content: end;">
+							<div id="scrollContainer">
+
+							</div>
+							<textarea id="message" style="resize: vertical; max-height: 200px; min-height: 25px;"></textarea>
+							<button onclick="sendMessage(false, '')" style="font-weight: bold; height: 35px;align-self: center; min-width: 100%;">Absenden</button>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+		<tfoot style="padding-bottom: 50px;">
+			<tr>
+			<td style="text-align: left;display: flex; flex-direction: row; border: hidden;flex-wrap: wrap;">
+				<label>© 2023 Steven Lippert.</label>
+				<label>All rights reserved</label>
+				 </td>
+			<td style="text-align: center;">Ein Projekt als Abschluss zum core curriculum der 42 Heilbronn</td>
+			<td style="text-align: right;display: flex; flex-direction: column; border: hidden;">
+				<label id="footTime"></label>
+				<label id="footDay"></label>
+			</td>
+			</tr>
+		</tfoot>
+	</table>
+	<script src="script.js"></script>
+</body>
+
+</html>

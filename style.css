@@ -13,6 +13,7 @@ body
 
 table
 {
+
 	border: hidden;
 	border-radius: 0 0 20px 20px;
 	background-color: rgb(37, 37, 37);
@@ -130,7 +131,7 @@ button:hover
 	background-color: #f1f1f1;
 	color: #000;
 }
-#UserPanel
+/* #UserPanel
 {
 	vertical-align: top;
 	width: calc((100vw) / 5);
@@ -143,7 +144,7 @@ button:hover
 {
 	width: calc((100vw) / 5);
 
-}
+} */
 td label{
 	font-weight: 100;
 }
