@@ -10,7 +10,14 @@ body
 	color: whitesmoke;
 	overflow: hidden;
 }
-
+#scrollContainer {
+	display: flex;
+	flex-direction: column;
+	overflow-y: auto;
+	overflow-x: hidden;
+	max-height: 70vh;
+	scroll-behavior: smooth;
+}
 table
 {
 
@@ -131,20 +138,7 @@ button:hover
 	background-color: #f1f1f1;
 	color: #000;
 }
-/* #UserPanel
-{
-	vertical-align: top;
-	width: calc((100vw) / 5);
-}
-#GamePanel
-{
-	min-width: calc((100vw) / 3);
-}
-#ChatPanel
-{
-	width: calc((100vw) / 5);
 
-} */
 td label{
 	font-weight: 100;
 }
